@@ -2,9 +2,9 @@
 	function edit1() {
 		$ind=$_POST["wordIndex"];
 		$con=mysqli_connect("mysql301.ixwebhosting.com","manlapi_eric","sTinky1987","manlapi_ericdev");
-		$result=mysqli_query($con,"SELECT * FROM JP_dev WHERE itemIndex='$ind'");
+		$result=mysqli_query($con,"SELECT * FROM JPdev_Words WHERE Index='$ind'");
 		$row=mysqli_fetch_array($result);
-		$kanjiArray=explode(",",$row['itemValue']);
+		$kanjiArray=explode(",",$row['Kanji']);
 		$len=count($kanjiArray);
 		$word="";
 		for ($i=0;$i<$len;$i++) {

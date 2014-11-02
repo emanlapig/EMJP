@@ -2,11 +2,11 @@
 	function viewWord() {
 		$ind=$_POST["wordIndex"];
 		$con=mysqli_connect("mysql301.ixwebhosting.com","manlapi_eric","sTinky1987","manlapi_ericdev");
-		$result=mysqli_query($con,"SELECT * FROM JP_dev WHERE fakeKey='$ind'");
+		$result=mysqli_query($con,"SELECT * FROM JPdev_Words WHERE fakeKey='$ind'");
 		$row=mysqli_fetch_array($result);
 
-		$kanjiArray=explode(",",$row['itemValue']);
-		$fgArray=explode(",",$row['itemValue2']);
+		$kanjiArray=explode(",",$row['Kanji']);
+		$fgArray=explode(",",$row['Furigana']);
 		$len=count($kanjiArray);
 
 		if ($len<8) {
@@ -21,7 +21,7 @@
 			echo "<span class=\"".$ksize."\">".$kanjiArray[$i]."</span></center></span>";
 		};
 
-		echo "<br><br><span class=\"def2\"><center>(".$row['itemType'].") ".$row['itemDef']."</center></span><br><br>";
+		echo "<br><br><span class=\"def2\"><center>(".$row['Type'].") ".$row['Definition']."</center></span><br><br>";
 
 		mysqli_close($con);
 	};

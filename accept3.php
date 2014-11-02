@@ -1,6 +1,6 @@
 <?php
 	include 'sortprint.php';
-	function accept3($cb,$cb2,$cb3) {
+	function accept3($cb,$cb2) {
 		$kanji=",";
 		$fgana=",";
 		$wordType=$_POST["wordType"];
@@ -13,10 +13,10 @@
 				$fgana.=$thisFgana.",";
 			};
 		};
-		$cb($kanji,$fgana,$wordType,$wordDef,$cb2,$cb3);
+		$cb($kanji,$fgana,$wordType,$wordDef,$cb2);
 	}
 
-	function submitData($kanji,$fgana,$wordType,$wordDef,$cb2,$cb3) {
+	function submitData($kanji,$fgana,$wordType,$wordDef,$cb2) {
 		$con=mysqli_connect("mysql301.ixwebhosting.com","manlapi_eric","sTinky1987","manlapi_ericdev");
 
 		// Check connection
@@ -24,7 +24,7 @@
 		  	echo "Failed to connect to MySQL: " . mysqli_connect_error();
 		};
 
-		$result=mysqli_query($con,"SELECT * FROM JP_dev");
+		$result=mysqli_query($con,"SELECT * FROM JPdev_Words");
 		$maxIndex=0;
 
 		if ($result!=null) {
@@ -37,12 +37,12 @@
 			$maxIndex+=1;
 		}
 
-		$sql=mysqli_query($con,"INSERT INTO JP_dev (fakeKey, itemValue, itemValue2, itemType, itemDef) VALUES ('$maxIndex', '$kanji', '$fgana', '$wordType', '$wordDef')");
+		$sql=mysqli_query($con,"INSERT INTO JPdev_Words (fakeKey, Kanji, Furigana, Type, Definition) VALUES ('$maxIndex', '$kanji', '$fgana', '$wordType', '$wordDef')");
 
 		mysqli_close($con);
 
-		$cb2($cb3);
+		$cb2();
 	};
 
-	accept3("submitData","sortPrint","printData");
+	accept3("submitData","printData");
 ?>
