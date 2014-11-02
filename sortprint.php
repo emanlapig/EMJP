@@ -20,11 +20,11 @@
 	}
 
 	function printData($con) {
-		$result = mysqli_query($con,"SELECT * FROM JP_dev ORDER BY fakeKey DESC");
+		$result = mysqli_query($con,"SELECT * FROM JPdev_Words ORDER BY fakeKey DESC");
 
 		while($row = mysqli_fetch_array($result)) {
-			$kanjiArray=explode(",",$row['itemValue']);
-			$fgArray=explode(",",$row['itemValue2']);
+			$kanjiArray=explode(",",$row['Kanji']);
+			$fgArray=explode(",",$row['Furigana']);
 			echo "<span class=\"listItem\" id=\"list".$row['fakeKey']."\" onclick=\"viewWord(".$row['fakeKey'].")\">";
 			echo "<span class=\"listWord\">";
 
@@ -41,7 +41,7 @@
 				echo "<span class=\"".$ksize."\">".$kanjiArray[$i]."</span></center></span>";
 			}
 			echo "</span>";
-			echo "<span class=\"def1\">(".$row['itemType'].") ".$row['itemDef']."</span>";
+			echo "<span class=\"def1\">(".$row['Type'].") ".$row['Definition']."</span>";
 			echo "</span>";
 		}
 		mysqli_close($con);
