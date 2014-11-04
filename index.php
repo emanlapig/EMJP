@@ -16,9 +16,10 @@
 <script type="text/javascript" src="Main.js"></script>
 </head>
 <body onload="$.getScript('Main2.js')">
-	<div id="container2">
+	<div id="container">
 		<form id="form1">
 			<div id="windows">
+				<!-- LIST WINDOW -->
 				<div class="window" id="listWindow">
 					<div id="addNew" class="btn1">+Add New</div>
 					<div id="sort" class="btn1">Sort</div>
@@ -27,7 +28,9 @@
 						<?php include 'sortprint.php'; printData(); ?>
 					</div>
 				</div>
-				<div class="window" id="window1">
+
+				<!-- NEW WORD 1: Word/Type -->
+				<div class="window" id="newWordWindow1">
 					<div class="header">
 						<center><span class="windowHeader1 eng2">New Word Entry</span></center>
 					</div>
@@ -55,7 +58,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="window" id="window2">
+				<!-- NEW WORD 2: Readings -->
+				<div class="window" id="newWordWindow2">
 					<div class="header">
 						<center><span class="windowHeader1 eng2">New Word Entry</span></center>
 					</div>
@@ -74,7 +78,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="window" id="window3">
+				<!-- NEW WORD 3: Definition -->
+				<div class="window" id="newWordWindow3">
 					<div class="header">
 						<center><span class="windowHeader1 eng2">New Word Entry</span></center>
 					</div>
@@ -92,7 +97,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="window" id="window4">
+
+				<!-- VIEW WORD WINDOW -->
+				<div class="window" id="viewWordWindow1">
 					<div class="header">
 						<center><span class="eng2" id="windowHeader4">Word</span></center>
 					</div>
@@ -109,7 +116,7 @@
 						</span>
 					</div>
 				</div>
-				<div class="window" id="window4b">
+				<div class="window" id="viewWordWindow2">
 					<div class="header">
 						<center><span class="eng2">Word</span></center>
 					</div>

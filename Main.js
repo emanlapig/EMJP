@@ -4,7 +4,16 @@ window.addEventListener("load",function() {
     }, 0);
 });
 //document.addEventListener("touchstart", function() {}, true);
-function move1() {
+
+
+function moveML(moveArray) {
+	for (var i=0;i<moveArray.length;i++) {
+		thisObj = moveArray[i];
+		TweenLite.to(thisObj.obj, thisObj.dur, {css:{marginLeft:thisObj.val, ease:Power2.easeInOut}, delay:thisObj.delay});
+	}
+}
+
+/*function move1() {
 	TweenLite.to("#window1", .5, {css:{marginLeft:"-340px", ease:Power2.easeInOut},delay:.4});
 	TweenLite.to("#window2", .5, {css:{marginLeft:"0px", ease:Power2.easeInOut},delay:.4});
 }
@@ -47,4 +56,4 @@ function move6() {
 	TweenLite.to("#window4", 0, {css:{marginLeft:"340px", ease:Power2.easeInOut},delay:1});
 	TweenLite.to("#listWindow", 0, {css:{marginLeft:"340px", ease:Power2.easeInOut},delay:1});
 	TweenLite.to("#window1", .5, {css:{marginLeft:"0px", ease:Power2.easeInOut},delay:.4});
-}
+}*/

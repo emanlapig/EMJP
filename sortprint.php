@@ -6,7 +6,7 @@
 		while($row = mysqli_fetch_array($result)) {
 			$kanjiArray=explode(",",$row['Kanji']);
 			$fgArray=explode(",",$row['Furigana']);
-			echo "<span class=\"listItem\" id=\"list".$row['fakeKey']."\" onclick=\"viewWord(".$row['fakeKey'].")\">";
+			echo "<span class=\"listItem\" id=\"list".$row['fakeKey']."\" onclick=\"window.wordObj={num:'".$row['fakeKey']."',kanji:'".$row['Kanji']."',fg:'".$row['Furigana']."',type:'".$row['Type']."',def:'".$row['Definition']."'};viewWord(wordObj)\">";
 			echo "<span class=\"listWord\">";
 
 			$len=count($kanjiArray);

@@ -4,7 +4,7 @@ window.specialRead=false;
 $(".listItem").bind('touchmove',function(event) {
 	event.stopPropagation();
 });
-$("#container2").bind('touchmove',function(event) {
+$("#container").bind('touchmove',function(event) {
 	event.preventDefault();
 	event.stopPropagation();
 });
@@ -23,7 +23,10 @@ $("#accept1").click(function(event) {
 		$("#arrow2").css("display","none");
 	}
 	window.thisFg=0;
-	move1();
+	moveML([
+		{obj:"#newWordWindow1", dur:.5, val:"-340px", delay:.4},
+		{obj:"#newWordWindow2", dur:.5, val:"0px", delay:.4}
+	]);
 });
 $("#accept2").click(function(event) {
 	$form=$("#form1");
@@ -31,22 +34,31 @@ $("#accept2").click(function(event) {
 		$("#wordDisplay").text("");
     	$("#wordDisplay").append(data);
 	});
-	move2();
+	moveML([
+		{obj:"#newWordWindow2", dur:.5, val:"-340px", delay:.4},
+		{obj:"#newWordWindow3", dur:.5, val:"0px", delay:.4}
+	]);
 });
 function bindList() {
 	$(".listItem").bind('touchmove',function(event) {
 		event.stopPropagation();
 	});
-	$("#container2").bind('touchmove',function(event) {
+	$("#container").bind('touchmove',function(event) {
 		event.preventDefault();
 		event.stopPropagation();
 	});
 };
 $("#back1").click(function(event) {
-	move1b();
+	moveML([
+		{obj:"#newWordWindow1", dur:.5, val:"0px", delay:.4},
+		{obj:"#newWordWindow2", dur:.5, val:"340px", delay:.4}
+	]);
 });
 $("#back2").click(function(event) {
-	move2b();
+	moveML([
+		{obj:"#newWordWindow2", dur:.5, val:"0px", delay:.4},
+		{obj:"#newWordWindow3", dur:.5, val:"340px", delay:.4}
+	]);
 	if ($("#wordDef").val()=="") {
 		$("#wordDef").removeClass("textActive").addClass("textInactive");
 		wordDefInit=false;
@@ -55,7 +67,11 @@ $("#back2").click(function(event) {
 $("#back3").click(function(event) {
 	event.preventDefault();
 	event.stopPropagation();
-	move5b();
+	moveML([
+		{obj:"#listWindow", dur:.5, val:"0px", delay:.4},
+		{obj:"#viewWordWindow1", dur:.5, val:"340px", delay:.4},
+		{obj:"#viewWordWindow2", dur:.5, val:"340px", delay:.4},
+	]);
 	$(".listSelected").removeClass("listSelected");
 });
 $("#delete1").click(function(event) {
@@ -65,7 +81,11 @@ $("#delete1").click(function(event) {
 		$("#listCtnr").append(data);
 		bindList();
 	});
-	move5b();
+	moveML([
+		{obj:"#listWindow", dur:.5, val:"0px", delay:.4},
+		{obj:"#viewWordWindow1", dur:.5, val:"340px", delay:.4},
+		{obj:"#viewWordWindow2", dur:.5, val:"340px", delay:.4},
+	]);
 });
 $("#edit1").click(function(event) {
 	/*$form=$("#form1");
@@ -81,7 +101,12 @@ $("#edit1").click(function(event) {
 	$(".windowHeader1").text("Edit Word");
 	$("#submitEdit").html("<div class=\"btn1\" id=\"accept4\">Accept</div>");
 	bindEdit1();
-	move6();
+	moveML([
+		{obj:"#viewWordWindow1", dur:.5, val:"-340px", delay:.4},
+		{obj:"#viewWordWindow2", dur:0, val:"340px", delay:1},
+		{obj:"#listWindow", dur:0, val:"340px", delay:.4},
+		{obj:"#newWordWindow1", dur:.5, val:"0px", delay:1}
+	]);
 });
 function bindEdit1() {
 	$("#accept4").click(function(event) {
@@ -91,7 +116,13 @@ function bindEdit1() {
 			$("#listCtnr").append(data);
 			bindList();
 		});
-		move4();
+		moveML([
+			{obj:"#listWindow", dur:.5, val:"0px", delay:.4},
+			{obj:"#newWordWindow3", dur:.5, val:"-340px", delay:.4},
+			{obj:"#newWordWindow1", dur:0, val:"340px", delay:1},
+			{obj:"#newWordWindow2", dur:0, val:"340px", delay:1},
+			{obj:"#newWordWindow3", dur:0, val:"340px", delay:1}
+		]);
 	});
 };
 function bindEdit2() {
@@ -102,7 +133,13 @@ function bindEdit2() {
 			$("#listCtnr").append(data);
 			bindList();
 		});
-		move4();
+		moveML([
+			{obj:"#listWindow", dur:.5, val:"0px", delay:.4},
+			{obj:"#newWordWindow3", dur:.5, val:"-340px", delay:.4},
+			{obj:"#newWordWindow1", dur:0, val:"340px", delay:1},
+			{obj:"#newWordWindow2", dur:0, val:"340px", delay:1},
+			{obj:"#newWordWindow3", dur:0, val:"340px", delay:1}
+		]);
 	});
 };
 $("#special").click(function(event) {
@@ -138,7 +175,11 @@ $("#addNew").click(function(event) {
 	$(".windowHeader1").text("New Word Entry");
 	$("#submitEdit").html("<div class=\"btn1\" id=\"accept3\">Accept</div>");
 	bindEdit2();
-	move3();
+	moveML([
+		{obj:"#listWindow", dur:.5, val:"-340px", delay:.4},
+		{obj:"#newWordWindow1", dur:.5, val:"0px", delay:.4},
+		{obj:"#listWindow", dur:0, val:"340px", delay:1}
+	]);
 });
 window.thisFg=0;
 $("#arrow1").click(function(event) {
@@ -192,18 +233,50 @@ function ddSelect(event,item,activeDD) {
 	$("#typeField").val(item);
 	$("#wordDef").val("("+item+")");
 };
-function viewWord(num) {
-	thisNum=parseInt(num);
-	$("#list"+thisNum).addClass("listSelected");
-	$("#indexField").val(thisNum);
+function viewWord(wordObj) {
+	var num = wordObj.num;
+	var kanji = wordObj.kanji;
+	var fg = wordObj.fg;
+	var type = wordObj.type;
+	var def = wordObj.def;
+	//thisNum=parseInt(num);
+	$("#list"+num).addClass("listSelected");
+	/*$("#indexField").val(thisNum);
 	$form=$("#form1");
-	$.post("viewWord.php",form1.serialize(),function(data){
+	$.post("viewWord.php",form1.serialize(),function(data){ 
 		$("#wordDisplay2").text("");
     	$("#wordDisplay2").append(data);
-    	$("#word1").val(thisNum);
-	});
-	$("#windowHeader4").text("Word "+thisNum);
-	move5();
+    	$("#word1").val("");
+	});*/
+	
+	var kanjiArray = kanji.split(",");
+	var fgArray = fg.split(",");
+	var wordSplit = "";
+	var len = kanjiArray.length;
+	var ksize = 0;
+	if (len<8) {
+		ksize = "kanji5";
+	} else {
+		ksize = "kanji2";
+	}
+
+	for (var i=0;i<len;i++) {
+		wordSplit+="<span class=\"kfg3\"></center>";
+		wordSplit+="<span class=\"fg3\">"+fgArray[i]+"</span>";
+		wordSplit+="<span class=\""+ksize+"\">"+kanjiArray[i]+"</span></center></span>";
+
+	}
+	wordSplit+="<br><br><span class=\"def2\"><center>("+type+") "+def+"</center></span><br><br>";
+
+	$("#wordDisplay2").text("");
+	$("#wordDisplay2").append(wordSplit);
+
+	$("#windowHeader4").text("Word "+num);
+	moveML([
+		{obj:"#listWindow", dur:.5, val:"-340px", delay:.4},
+		{obj:"#viewWordWindow1", dur:.5, val:"0px", delay:.4}
+		//{obj:"#listWindow", dur:0, val:"340px", delay:1}
+	]);
 };
 window.touchOrig = {x:0,y:0};
 window.touchNew = {x:0,y:0};
@@ -211,7 +284,7 @@ window.w4rotate = 0;
 window.deltaX = 0;
 window.deltaY = 0;
 window.touchSpeed = 0;
-$("#window4 .windowContent").bind({
+$("#viewWordWindow1").bind({
 	touchstart: function(e) {
 		touchOrig.x = event.targetTouches[0].pageX;
 		touchOrig.y = event.targetTouches[0].pageY;
@@ -268,7 +341,7 @@ $("#window4 .windowContent").bind({
 	}
 });
 
-$("#window4b .windowContent").bind({
+$("#viewWordWindow2").bind({
 	touchstart: function(e) {
 		touchOrig.x = event.targetTouches[0].pageX;
 		touchOrig.y = event.targetTouches[0].pageY;
