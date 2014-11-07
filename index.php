@@ -34,7 +34,7 @@
 							<?php printData("listItemClone"); ?>
 						</div>
 					</div>
-					<input type="text" class="input2" id="reorderField" name="reorderStr">
+					<input type="text" class="input3" id="reorderField" name="reorderStr">
 				</div>
 
 				<!-- NEW WORD 1: Word/Type -->

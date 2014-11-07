@@ -393,7 +393,7 @@ function endMove() {
 	}
 	$("#reorderField").val(reorderStr);
 	$form=$("#form1");
-	$.post("includes/reorder.php",form1.serialize(),function(data){
+	$.post("http://eric.manlapig.net/PHPdev/includes/reorder.php",form1.serialize(),function(data){
 		//var divs = data.split("<a id='break'></a>");
 		$("#listClone").text("");
 		$("#listClone").append(data);
