@@ -10,7 +10,7 @@
 				$thisInd=$row['fakeKey'];
 				if ($thisInd>$ind) {
 					$newInd=$thisInd-1;
-					$sql2="UPDATE JP_dev SET fakeKey='$newInd' WHERE fakeKey='$thisInd'";
+					$sql2="UPDATE JPdev_words SET fakeKey='$newInd' WHERE fakeKey='$thisInd'";
 					mysqli_query($con,$sql2) or die('Error (reorder): ' . mysqli_error($con));
 				}
 			}

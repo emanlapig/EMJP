@@ -10,7 +10,7 @@ $("#container").bind('touchmove',function(event) {
 });
 $("#accept1").click(function(event) {
 	$form=$("#form1");
-	$.post("accept1.php",form1.serialize(),function(data){
+	$.post("includes/accept1.php",form1.serialize(),function(data){
 		$("#fgentry").text("");
     	$("#fgentry").append(data);
 	});
@@ -30,7 +30,7 @@ $("#accept1").click(function(event) {
 });
 $("#accept2").click(function(event) {
 	$form=$("#form1");
-	$.post("accept2.php",form1.serialize(),function(data){
+	$.post("includes/accept2.php",form1.serialize(),function(data){
 		$("#wordDisplay").text("");
     	$("#wordDisplay").append(data);
 	});
@@ -76,7 +76,7 @@ $("#back3").click(function(event) {
 });
 $("#delete1").click(function(event) {
 	$form=$("#form1");
-	$.post("delete.php",form1.serialize(),function(data){
+	$.post("includes/delete.php",form1.serialize(),function(data){
 		$("#listCtnr").text("");
 		$("#listCtnr").append(data);
 		bindList();
@@ -111,7 +111,7 @@ $("#edit1").click(function(event) {
 function bindEdit1() {
 	$("#accept4").click(function(event) {
 		$form=$("#form1");
-		$.post("accept4.php",form1.serialize(),function(data){
+		$.post("includes/accept4.php",form1.serialize(),function(data){
 			$("#listCtnr").text("");
 			$("#listCtnr").append(data);
 			bindList();
@@ -128,7 +128,7 @@ function bindEdit1() {
 function bindEdit2() {
 	$("#accept3").click(function(event) {
 		$form=$("#form1");
-		$.post("accept3.php",form1.serialize(),function(data){
+		$.post("includesaccept3.php",form1.serialize(),function(data){
 			$("#listCtnr").text("");
 			$("#listCtnr").append(data);
 			bindList();
@@ -144,7 +144,7 @@ function bindEdit2() {
 };
 $("#special").click(function(event) {
 	$form=$("#form1");
-	$.post("special.php",form1.serialize(),function(data){
+	$.post("includes/special.php",form1.serialize(),function(data){
 		$("#fgentry").text("");
     	$("#fgentry").append(data);
 	});
@@ -264,7 +264,6 @@ function viewWord(wordObj) {
 		wordSplit+="<span class=\"kfg3\"></center>";
 		wordSplit+="<span class=\"fg3\">"+fgArray[i]+"</span>";
 		wordSplit+="<span class=\""+ksize+"\">"+kanjiArray[i]+"</span></center></span>";
-
 	}
 	wordSplit+="<br><br><span class=\"def2\"><center>("+type+") "+def+"</center></span><br><br>";
 
@@ -274,8 +273,8 @@ function viewWord(wordObj) {
 	$("#windowHeader4").text("Word "+num);
 	moveML([
 		{obj:"#listWindow", dur:.5, val:"-340px", delay:.4},
-		{obj:"#viewWordWindow1", dur:.5, val:"0px", delay:.4}
-		//{obj:"#listWindow", dur:0, val:"340px", delay:1}
+		{obj:"#viewWordWindow1", dur:.5, val:"0px", delay:.4},
+		{obj:"#viewWordWindow2", dur:.5, val:"0px", delay:.4}
 	]);
 };
 window.touchOrig = {x:0,y:0};
@@ -284,115 +283,135 @@ window.w4rotate = 0;
 window.deltaX = 0;
 window.deltaY = 0;
 window.touchSpeed = 0;
-$("#viewWordWindow1").bind({
-	touchstart: function(e) {
-		touchOrig.x = event.targetTouches[0].pageX;
-		touchOrig.y = event.targetTouches[0].pageY;
-		window.timeTouch = setInterval(function(){touchSpeed+=1;},10);
-	},
-	touchmove: function(e) {
-		touchNew.x = event.targetTouches[0].pageX;
-		touchNew.y = event.targetTouches[0].pageY;
-		deltaX = (touchOrig.x-touchNew.x)/2;
-		deltaY = (touchOrig.y-touchNew.y)/2;
-		w4rotate=deltaY;
-		if (w4rotate<=180 && w4rotate>=-180) {
-			$("#window4").css({"transform":"rotateX("+deltaY+"deg)","webkitTransform":"rotateX("+deltaY+"deg)"});
-			$("#window4b").css({"transform":"rotateX("+(180-deltaY)+"deg)","webkitTransform":"rotateX("+(180-deltaY)+"deg)"});
-		};
-	},
-	touchend: function(e) {
-		clearInterval(timeTouch);
-		var fastSwipeU = false;
-		var fastSwipeD = false;
-		if (touchSpeed<20) {
-			if (deltaY>1) {
-				fastSwipeU = true;
-			}
-			if (deltaY<-1) {
-				fastSwipeD = true;
-			}
-		}
-
-		if (w4rotate>90 || w4rotate<-90 || fastSwipeU || fastSwipeD) {
-			if (w4rotate>90 || fastSwipeU) {
-				$("#window4").addClass("rotateTrans").css({"transform":"rotateX(180deg)","webkitTransform":"rotateX(180deg)"});
-				$("#window4b").addClass("rotateTrans").css({"transform":"rotateX(0deg)","webkitTransform":"rotateX(0deg)"});
-			} else if (w4rotate<-90 || fastSwipeD) {
-				$("#window4").addClass("rotateTrans").css({"transform":"rotateX(-180deg)","webkitTransform":"rotateX(-180deg)"});
-				$("#window4b").addClass("rotateTrans").css({"transform":"rotateX(360deg)","webkitTransform":"rotateX(360deg)"});
-			}
-			window.setTimeout(function() {
-				if ($("#window4").hasClass("rotateTrans")) {
-					$("#window4").removeClass("rotateTrans");
-					$("#window4b").removeClass("rotateTrans");
+function bindFlip(window1,window2) {
+	$(window1).bind({
+		touchstart: function(e) {
+			touchOrig.x = event.targetTouches[0].pageX;
+			touchOrig.y = event.targetTouches[0].pageY;
+			window.timeTouch = setInterval(function(){touchSpeed+=1;},10);
+		},
+		touchmove: function(e) {
+			touchNew.x = event.targetTouches[0].pageX;
+			touchNew.y = event.targetTouches[0].pageY;
+			deltaX = (touchOrig.x-touchNew.x)/2;
+			deltaY = (touchOrig.y-touchNew.y)/2;
+			w4rotate=deltaY;
+			if (w4rotate<=180 && w4rotate>=-180) {
+				$(window1).css({"transform":"rotateX("+deltaY+"deg)","webkitTransform":"rotateX("+deltaY+"deg)"});
+				$(window2).css({"transform":"rotateX("+(180-deltaY)+"deg)","webkitTransform":"rotateX("+(180-deltaY)+"deg)"});
+			};
+		},
+		touchend: function(e) {
+			clearInterval(timeTouch);
+			var fastSwipeU = false;
+			var fastSwipeD = false;
+			if (touchSpeed<20) {
+				if (deltaY>1) {
+					fastSwipeU = true;
 				}
-				$("#window4b").css({"transform":"rotateX(0deg)","webkitTransform":"rotateX(0deg)"});
-				$("#window4").css({"transform":"rotateX(180deg)","webkitTransform":"rotateX(180deg)"});
-			},500);
-		} else {
-			$("#window4").addClass("rotateTrans").css({"transform":"rotateX(0deg)","webkitTransform":"rotateX(0deg)"});
-			$("#window4b").addClass("rotateTrans").css({"transform":"rotateX(180deg)","webkitTransform":"rotateX(180deg)"});
+				if (deltaY<-1) {
+					fastSwipeD = true;
+				}
+			}
+
+			if (w4rotate>90 || w4rotate<-90 || fastSwipeU || fastSwipeD) {
+				if (w4rotate>90 || fastSwipeU) {
+					$(window1).addClass("rotateTrans").css({"transform":"rotateX(180deg)","webkitTransform":"rotateX(180deg)"});
+					$(window2).addClass("rotateTrans").css({"transform":"rotateX(0deg)","webkitTransform":"rotateX(0deg)"});
+				} else if (w4rotate<-90 || fastSwipeD) {
+					$(window1).addClass("rotateTrans").css({"transform":"rotateX(-180deg)","webkitTransform":"rotateX(-180deg)"});
+					$(window2).addClass("rotateTrans").css({"transform":"rotateX(360deg)","webkitTransform":"rotateX(360deg)"});
+				}
+				window.setTimeout(function() {
+					if ($(window1).hasClass("rotateTrans")) {
+						$(window1).removeClass("rotateTrans");
+						$(window2).removeClass("rotateTrans");
+					}
+					$(window2).css({"transform":"rotateX(0deg)","webkitTransform":"rotateX(0deg)"});
+					$(window1).css({"transform":"rotateX(180deg)","webkitTransform":"rotateX(180deg)"});
+				},500);
+			} else {
+				$(window1).addClass("rotateTrans").css({"transform":"rotateX(0deg)","webkitTransform":"rotateX(0deg)"});
+				$(window2).addClass("rotateTrans").css({"transform":"rotateX(180deg)","webkitTransform":"rotateX(180deg)"});
+			}
+			deltaX = 0;
+			deltaY = 0;
+			w4rotate=0;
+			touchSpeed=0;
 		}
-		deltaX = 0;
-		deltaY = 0;
-		w4rotate=0;
-		touchSpeed=0;
-	}
+	});
+}
+
+bindFlip("#viewWordWindow1","#viewWordWindow2");
+bindFlip("#viewWordWindow2","#viewWordWindow1");
+
+window.reordering=false;
+window.moving=0;
+window.cloneArray = new Array();
+window.cloneClone = new Array();
+
+$("#reorder").click(function(event) {
+	$("#listReal").css("visibility","hidden");
+	$("#listClone").css("visibility","visible");
+	$(".listItemClone").draggable({axis:"y"}).css("z-index","10000");
+	cloneArray = cloneStr.split(",");
+	cloneClone = cloneArray.slice(0);
 });
 
-$("#viewWordWindow2").bind({
-	touchstart: function(e) {
-		touchOrig.x = event.targetTouches[0].pageX;
-		touchOrig.y = event.targetTouches[0].pageY;
-		window.timeTouch = setInterval(function(){touchSpeed+=1;},10);
-	},
-	touchmove: function(e) {
-		touchNew.x = event.targetTouches[0].pageX;
-		touchNew.y = event.targetTouches[0].pageY;
-		deltaX = (touchOrig.x-touchNew.x)/2;
-		deltaY = (touchOrig.y-touchNew.y)/2;
-		w4rotate=deltaY;
-		if (w4rotate<=180 && w4rotate>=-180) {
-			$("#window4b").css({"transform":"rotateX("+deltaY+"deg)","webkitTransform":"rotateX("+deltaY+"deg)"});
-			$("#window4").css({"transform":"rotateX("+(180-deltaY)+"deg)","webkitTransform":"rotateX("+(180-deltaY)+"deg)"});
-		};
-	},
-	touchend: function(e) {
-		clearInterval(timeTouch);
-		var fastSwipeU = false;
-		var fastSwipeD = false;
-		if (touchSpeed<20) {
-			if (deltaY>1) {
-				fastSwipeU = true;
+function moveWord(num) {
+	window.ph=document.getElementById("listClone"+num);
+	window.phHeight = ph.scrollHeight;
+	$("#listClone"+num).css("z-index","1000").hover(function() {});
+	reordering=true;
+	moving=num;
+}
+function cloneMO(num) {
+	if (reordering) {
+		swap = cloneArray.indexOf(moving.toString());
+		swapWith = cloneArray.indexOf(num.toString());
+		if ($("#listClone"+num).css("top")=="0px" || $("#listClone"+num).css("top")=="auto") {
+			if (swap>swapWith) {
+				$("#listClone"+num).css("top",""+(phHeight+2)+"px");
+			} else {
+				$("#listClone"+num).css("top","-"+(phHeight+2)+"px");
 			}
-			if (deltaY<-1) {
-				fastSwipeD = true;
-			}
-		}
-		if (w4rotate>90 || w4rotate<-90 || fastSwipeU || fastSwipeD) {
-			if (w4rotate>90 || fastSwipeU) {
-				$("#window4b").addClass("rotateTrans").css({"transform":"rotateX(180deg)","webkitTransform":"rotateX(180deg)"});
-				$("#window4").addClass("rotateTrans").css({"transform":"rotateX(0deg)","webkitTransform":"rotateX(0deg)"});
-			} else if (w4rotate<-90 || fastSwipeD) {
-				$("#window4b").addClass("rotateTrans").css({"transform":"rotateX(-180deg)","webkitTransform":"rotateX(-180deg)"});
-				$("#window4").addClass("rotateTrans").css({"transform":"rotateX(360deg)","webkitTransform":"rotateX(360deg)"});
-			}
-			window.setTimeout(function() {
-				if ($("#window4").hasClass("rotateTrans")) {
-					$("#window4").removeClass("rotateTrans");
-					$("#window4b").removeClass("rotateTrans");
-				}
-				$("#window4").css({"transform":"rotateX(0deg)","webkitTransform":"rotateX(0deg)"});
-				$("#window4b").css({"transform":"rotateX(180deg)","webkitTransform":"rotateX(180deg)"});
-			},500);
 		} else {
-			$("#window4b").addClass("rotateTrans").css({"transform":"rotateX(0deg)","webkitTransform":"rotateX(0deg)"});
-			$("#window4").addClass("rotateTrans").css({"transform":"rotateX(180deg)","webkitTransform":"rotateX(180deg)"});
+			$("#listClone"+num).css("top","0px");
 		}
-		deltaX = 0;
-		deltaY = 0;
-		w4rotate=0;
-		touchSpeed=0;
+		var b = cloneArray[swapWith];
+		cloneArray[swapWith] = cloneArray[swap];
+		cloneArray[swap] = b;
 	}
+}
+
+function endMove() {
+	reordering=false;
+	window.reorderStr = "";
+	cloneArray.reverse();
+	for (var i=0;i<cloneArray.length;i++) {
+		reorderStr += cloneArray[i]+",";
+	}
+	$("#reorderField").val(reorderStr);
+	$form=$("#form1");
+	$.post("includes/reorder.php",form1.serialize(),function(data){
+		//var divs = data.split("<a id='break'></a>");
+		$("#listClone").text("");
+		$("#listClone").append(data);
+		//bindList();
+		//$("#listClone").text("");
+		//$("#listClone").append(divs[1]);
+	});
+
+}
+
+$("#sort").click(function(event) {
+	$form=$("#form1");
+	$.post("includes/fix.php",form1.serialize(),function(data){
+		//var divs = data.split("<a id='break'></a>");
+		$("#listCtnr").text("");
+		$("#listCtnr").append(data);
+		//bindList();
+		//$("#listClone").text("");
+		//$("#listClone").append(divs[1]);
+	});
 });

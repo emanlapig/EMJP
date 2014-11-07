@@ -156,18 +156,26 @@ textarea {
 	width:200px;
 	vertical-align:middle;
 }
-.listItem {
+.listItem,.listItemClone {
 	width:280px;
 	display:block;
 	padding:4px;
 	padding-left:10px;
 	padding-right:10px;
+	top:0px;
 	margin-top:2px;
 	margin-bottom:2px;
 	background-color:rgba(185,202,219,.8);
 	border-radius:10px;
 	position:relative;
 	cursor:pointer;
+}
+.placeholder {
+	display:block;
+	position:relative;
+	height:0px;
+	width:100%;
+	background-color:#ff0000;
 }
 .listWord {
 	width:150px;
@@ -401,7 +409,20 @@ textarea {
 	overflow:scroll;
 	-webkit-overflow-scrolling:touch;
 }
-
+#listReal {
+	position:relative;
+	left:0px;
+	top:0px;
+	/* background-color:#ff0000;*/
+	margin:0px;
+}
+#listClone {
+	position:absolute;
+	top:0px;
+	left:0px;
+	/*background-color:#00ff00;*/
+	visibility:hidden;
+}
 #viewWord {
 	top:50%;
 	transform:translateY(-50%);
@@ -421,5 +442,4 @@ textarea {
 #viewWordWindow2 {
 	transform:rotateX(180deg);
 	-webkit-transform:rotateX(180deg);
-	z-index:-100;
 }

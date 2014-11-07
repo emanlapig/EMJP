@@ -6,6 +6,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <title>PHPdev</title>
 <script type="text/javascript" src="http://eric.manlapig.net/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script src="jquery.ui.touch-punch.min.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Metrophobic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
 <link href='http://eric.manlapig.net/PHPdev/style.css' rel='stylesheet' type='text/css'>
@@ -25,8 +27,14 @@
 					<div id="sort" class="btn1">Sort</div>
 					<div id="reorder" class="btn1">Reorder</div>
 					<div id="listCtnr">
-						<?php include 'sortprint.php'; printData(); ?>
+						<div id="listReal">
+							<?php include 'includes/sortprint.php'; printData("listItem"); ?>
+						</div>
+						<div id="listClone">
+							<?php printData("listItemClone"); ?>
+						</div>
 					</div>
+					<input type="text" class="input2" id="reorderField" name="reorderStr">
 				</div>
 
 				<!-- NEW WORD 1: Word/Type -->
@@ -43,7 +51,7 @@
 							</span>
 							<span id="btns1">
 								<div class="btn1ctnr">
-									<?php include 'dd1.php';
+									<?php include 'includes/dd1.php';
 										$items=array("n","pn","part","adj","v","adv","suf","ctr","intj","name");
 										$activeDD="wordType";
 										ddPrint($items,$activeDD);
