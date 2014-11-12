@@ -1,3 +1,4 @@
+$("#reorderField").val("");
 window.form1 = $("#form1");
 window.wordDefInit=false;
 window.specialRead=false;
@@ -349,28 +350,47 @@ window.reordering=false;
 window.moving=0;
 window.cloneArray = new Array();
 window.cloneClone = new Array();
+window.reorderStr = "";
 
 $("#reorder").click(function(event) {
-	$("#listReal").css("visibility","hidden");
-	$("#listClone").css("visibility","visible");
-	$(".listItemClone").draggable({axis:"y"}).css("z-index","10000");
+	//$("#listReal").css("opacity","0");
+	//$("#listClone").css("opacity","1");
+	//$("#func").val("printData('listItemClone')");
+	reorderStr="";
 	cloneArray = cloneStr.split(",");
+	cloneArray.reverse();
 	cloneClone = cloneArray.slice(0);
+	for (var i=0;i<cloneArray.length;i++) {
+		reorderStr += cloneArray[i]+",";
+	}
+	$("#reorderField").val(reorderStr);
+	$form=$("#form1");
+	$.post("includes/reorder.php",form1.serialize(),function(data){
+		//var divs = data.split("<a id='break'></a>");
+		$("#listCtnr").text("");
+		$("#listCtnr").append(data);
+		$(".listItemClone").draggable({axis:"y"}).css("z-index","10000");
+	});
 });
 
 function moveWord(num) {
+	moving=num;
+	cloneArray = cloneStr.split(",");
+	cloneArray.reverse();
+	cloneClone = cloneArray.slice(0);
 	window.ph=document.getElementById("listClone"+num);
 	window.phHeight = ph.scrollHeight;
-	$("#listClone"+num).css("z-index","1000").hover(function() {});
+	//$("#listClone"+num).css("z-index","1000").hover(function() {});
+	$("#listClone"+num).addClass("listCloneSelected");
+	$(".listCloneSelected").hover(function() {});
 	reordering=true;
-	moving=num;
 }
 function cloneMO(num) {
 	if (reordering) {
 		swap = cloneArray.indexOf(moving.toString());
 		swapWith = cloneArray.indexOf(num.toString());
 		if ($("#listClone"+num).css("top")=="0px" || $("#listClone"+num).css("top")=="auto") {
-			if (swap>swapWith) {
+			if (swap<swapWith) {
 				$("#listClone"+num).css("top",""+(phHeight+2)+"px");
 			} else {
 				$("#listClone"+num).css("top","-"+(phHeight+2)+"px");
@@ -384,24 +404,25 @@ function cloneMO(num) {
 	}
 }
 
-function endMove() {
+function endMove(num) {
+	$("#listClone"+num).removeClass("listCloneSelected");
+	reorderStr="";
 	reordering=false;
-	window.reorderStr = "";
-	cloneArray.reverse();
+	//cloneArray.reverse();
 	for (var i=0;i<cloneArray.length;i++) {
 		reorderStr += cloneArray[i]+",";
 	}
 	$("#reorderField").val(reorderStr);
 	$form=$("#form1");
-	$.post("http://eric.manlapig.net/PHPdev/includes/reorder.php",form1.serialize(),function(data){
+	$.post("includes/reorder.php",form1.serialize(),function(data){
 		//var divs = data.split("<a id='break'></a>");
-		$("#listClone").text("");
-		$("#listClone").append(data);
+		$("#listCtnr").text("");
+		$("#listCtnr").append(data);
+		$(".listItemClone").draggable({axis:"y"}).css("z-index","10000");
 		//bindList();
 		//$("#listClone").text("");
 		//$("#listClone").append(divs[1]);
 	});
-
 }
 
 $("#sort").click(function(event) {
@@ -415,3 +436,12 @@ $("#sort").click(function(event) {
 		//$("#listClone").append(divs[1]);
 	});
 });
+
+$("#menuWordList").click(function(event) {
+	moveML([
+		{obj:"#mainMenu", dur:.5, val:"-340px", delay:.4},
+		{obj:"#listWindow", dur:.5, val:"0px", delay:.4}
+	]);
+});
+
+TweenLite.to("#loading", .2, {autoAlpha:0});

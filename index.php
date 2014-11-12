@@ -18,6 +18,10 @@
 <script type="text/javascript" src="Main.js"></script>
 </head>
 <body onload="$.getScript('Main2.js')">
+	<div id="loading" style="z-index:1000">
+		<br><br>
+		<span class="eng2">&nbsp;Loading...</span>
+	</div>
 	<div id="container">
 		<form id="form1">
 			<div id="windows">
@@ -27,14 +31,10 @@
 					<div id="sort" class="btn1">Sort</div>
 					<div id="reorder" class="btn1">Reorder</div>
 					<div id="listCtnr">
-						<div id="listReal">
-							<?php include 'includes/sortprint.php'; printData("listItem"); ?>
-						</div>
-						<div id="listClone">
-							<?php printData("listItemClone"); ?>
-						</div>
+						<?php $listClass="listItem"; include 'includes/sortprint.php'; printData("listItem"); ?>
 					</div>
-					<input type="text" class="input3" id="reorderField" name="reorderStr">
+					<input type="text" class="input3" id="func" name="func">
+					<input type="text" class="input2" id="reorderField" name="reorderStr">
 				</div>
 
 				<!-- NEW WORD 1: Word/Type -->
@@ -133,6 +133,17 @@
 							<center>Back Side</center>
 						</span>
 					</div>
+				</div>
+
+				<!-- MAIN MENU -->
+				<div class="window" id="mainMenu">
+					<br><br><br>
+					<div class="btn4" id="menuWordList">Vocabulary</div>
+					<div class="btn4" id="menu-notes">Notes</div>
+					<div class="btn4" id="menu-conjugations">Conjugations</div>
+					<div class="btn4" id="menu-patterns">Patterns</div>
+					<div class="btn4" id="menu-drill">Drill</div>
+					<div class="btn4" id="menu-options">Options</div>
 				</div>
 			</div>
 		</form>

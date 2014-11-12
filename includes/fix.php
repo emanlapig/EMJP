@@ -4,7 +4,7 @@
 		$con=mysqli_connect("mysql301.ixwebhosting.com","manlapi_eric","sTinky1987","manlapi_ericdev");
 		$result = mysqli_query($con,"SELECT * FROM JPdev_Words ORDER BY wordIndex ASC");
 
-		$thisKey=0;
+		$thisKey=1;
 
 		while($row = mysqli_fetch_array($result)) {
 			$thisIndex = $row['wordIndex'];

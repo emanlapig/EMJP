@@ -9,8 +9,7 @@
 			$kanjiArray=explode(",",$row['Kanji']);
 			$fgArray=explode(",",$row['Furigana']);
 			if ($listClass=="listItemClone") {
-				echo "<span class=\"placeholder\" id=\"ph".$row['fakeKey']."\"></span>";
-				echo "<span class=\"".$listClass."\" id=\"listClone".$row['fakeKey']."\" onmousedown=\"moveWord(".$row['fakeKey'].")\" onmouseover=\"cloneMO(".$row['fakeKey'].")\" onmouseup=\"endMove()\">";
+				echo "<span class=\"".$listClass."\" id=\"listClone".$row['fakeKey']."\" onmousedown=\"moveWord(".$row['fakeKey'].")\" onmouseover=\"cloneMO(".$row['fakeKey'].")\" onmouseup=\"endMove(".$row['fakeKey'].")\" style=\"top:0px\">";
 			} else {
 				echo "<span class=\"".$listClass."\" id=\"list".$row['fakeKey']."\" onclick=\"window.wordObj={num:'".$row['fakeKey']."',kanji:'".$row['Kanji']."',fg:'".$row['Furigana']."',type:'".$row['Type']."',def:'".$row['Definition']."'};viewWord(wordObj)\">";
 			}
@@ -36,11 +35,8 @@
 		}
 
 		mysqli_close($con);
-
-		if ($listClass=="listItemClone") {
-			echo "<script type=\"text/javascript\">";
-			echo "window.cloneStr=\"".$cloneStr."\";";
-			echo "</script>";
-		}
-	}
+		echo "<script type=\"text/javascript\">";
+		echo "window.cloneStr=\"".$cloneStr."\";";
+		echo "</script>";
+	};
 ?>
